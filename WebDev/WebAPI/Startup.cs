@@ -32,6 +32,11 @@ namespace WebAPI
             services.AddSingleton<IBookService, BookManager>();
             services.AddSingleton<IBookDal, EfBookDal>();
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +47,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();
